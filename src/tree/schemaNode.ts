@@ -40,10 +40,16 @@ export class SchemaNode implements INode {
         c.relname as "name",
         (c.relkind IN ('r', 'f')) as is_table,
         (c.relkind = 'f') as is_foreign,
-        n.nspname as "schema"
+        n.nspname as "schema",
+        citus_tables.citus_table_type,
+        citus_tables.distribution_column,
+        citus_tables.colocation_id,
+        citus_tables.table_size,
+        citus_tables.shard_count
       FROM
         pg_catalog.pg_class c
         JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+        LEFT JOIN citus_tables ON c.relname = citus_tables.table_name::text
       WHERE
         c.relkind in ('r', 'v', 'm', 'f')
         AND n.nspname = $1
@@ -58,6 +64,9 @@ export class SchemaNode implements INode {
           childs.push(new FunctionFolderNode(this.connection, this.schemaName));
         }
       }
+      
+      // childs.push(new QueryResultFolderNode(this.connection, this.schemaName));
+
       // Append tables under virtual folders
       return childs.concat(res.rows.map<TableNode>(table => {
         return new TableNode(
@@ -65,13 +74,16 @@ export class SchemaNode implements INode {
           table.name,
           table.is_table,
           table.is_foreign,
-          table.schema
+          table.schema,
+          table.citus_table_type,
+          table.distribution_column,
+          table.colocation_id,
+          table.table_size,
+          table.shard_count
         );
       }));
     } catch(err) {
       return [new InfoNode(err)];
-    } finally {
-      await connection.end();
     }
   }
 }

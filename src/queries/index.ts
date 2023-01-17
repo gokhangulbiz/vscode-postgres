@@ -4,6 +4,7 @@ export class SqlQueries {
   TableColumns: string;
   GetFunctions: string;
   GetAllFunctions: string;
+  GetDistributedTables: string;
 
   public format(stringValue: string, ...formatParams: any[]): string {
     return stringValue.replace(/{(\d+)}/g, (match: string, number: string): string => {
@@ -177,7 +178,7 @@ let queries = {
         AND has_schema_privilege(n.oid, 'USAGE') = true
         AND has_function_privilege(p.oid, 'execute') = true
       ORDER BY 1, 2, 4;`,
-    GetAllFunctions: `
+      GetAllFunctions: `
       SELECT n.nspname as "schema",
         p.proname as "name",
         d.description,
@@ -197,7 +198,17 @@ let queries = {
         AND p.prorettype <> 'pg_catalog.trigger'::pg_catalog.regtype
         AND has_schema_privilege(n.oid, 'USAGE') = true
         AND has_function_privilege(p.oid, 'execute') = true
-      ORDER BY 1, 2, 4;`
+      ORDER BY 1, 2, 4;`,
+      GetDistributedTables: `
+      SELECT
+          table_name,
+          citus_table_type,
+          distribution_column,
+          colocation_id,
+          table_size,
+          shard_count
+      FROM
+          citus_tables;`
   }
 }
 

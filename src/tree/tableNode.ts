@@ -15,8 +15,13 @@ export class TableNode implements INode {
             , public readonly table: string
             , public readonly is_table: boolean
             , public readonly is_foreign: boolean
-            , public readonly schema?: string)
-  {}
+            , public readonly schema: string
+            , public readonly citus_table_type?: string
+            , public readonly distribution_column?: string
+            , public readonly colocation_id?: string
+            , public readonly table_size?: string
+            , public readonly shard_count?: string)
+            {}
 
   public getQuotedTableName(): string {
     let quotedSchema = this.schema && this.schema !== 'public' ? Database.getQuotedIdent(this.schema) : null;
@@ -25,11 +30,16 @@ export class TableNode implements INode {
   }
 
   public getTreeItem(): TreeItem {
+    let label = this.table;
+    if(this.citus_table_type) {
+      label = label + ' (' + this.citus_table_type + ')'
+       
+    }
     let iconName = 'table';
     if (this.is_table && this.is_foreign) iconName = 'fdw_table';
     else if (!this.is_table) iconName = 'view';
     return {
-      label: this.table,
+      label: label,
       collapsibleState: TreeItemCollapsibleState.Collapsed,
       contextValue: 'vscode-postgres.tree.table',
       iconPath: {
