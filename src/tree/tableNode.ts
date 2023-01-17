@@ -31,15 +31,27 @@ export class TableNode implements INode {
 
   public getTreeItem(): TreeItem {
     let label = this.table;
+    let tooltip = this.table;
     if(this.citus_table_type) {
-      label = label + ' (' + this.citus_table_type + ')'
-       
+      label = `${this.table} ( ${this.citus_table_type} )`
+      tooltip = [
+        `size: ${this.table_size}`,
+        `colocation: ${this.colocation_id}`
+      ].join('\n')
+
+      if(this.citus_table_type.startsWith("distributed")){
+        tooltip = [
+          `distribution column: ${this.distribution_column}`,
+          `shard count: ${this.shard_count}`
+        ].join('\n').concat('\n').concat(tooltip)
+      }
     }
     let iconName = 'table';
     if (this.is_table && this.is_foreign) iconName = 'fdw_table';
     else if (!this.is_table) iconName = 'view';
     return {
       label: label,
+      tooltip: tooltip,
       collapsibleState: TreeItemCollapsibleState.Collapsed,
       contextValue: 'vscode-postgres.tree.table',
       iconPath: {
