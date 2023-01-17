@@ -207,12 +207,17 @@
       },
       {
         "command": "vscode-postgres.distributeTable",
-        "title": "Distribute table",
+        "title": "*Distribute table",
+        "category": "PostgreSQL"
+      },
+      {
+        "command": "vscode-postgres.referenceTable",
+        "title": "*Reference table",
         "category": "PostgreSQL"
       },
       {
         "command": "vscode-postgres.undistributeTable",
-        "title": "Undistribute table",
+        "title": "*Undistribute table",
         "category": "PostgreSQL"
       },
       {
@@ -287,6 +292,10 @@
         },
         {
           "command": "vscode-postgres.distributeTable",
+          "when": "config.vscode-postgres.never"
+        },
+        {
+          "command": "vscode-postgres.referenceTable",
           "when": "config.vscode-postgres.never"
         },
         {
@@ -397,6 +406,11 @@
         },
         {
           "command": "vscode-postgres.distributeTable",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.table",
+          "group": "postgres@1"
+        },
+        {
+          "command": "vscode-postgres.referenceTable",
           "when": "view == postgres && viewItem == vscode-postgres.tree.table",
           "group": "postgres@1"
         },
