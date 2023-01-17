@@ -53,7 +53,7 @@ export class distributeTableCommand extends BaseCommand {
       let res: QueryResult = null;
 
       res = await connection.query("select create_distributed_table('" + treeNode.getQuotedTableName()+ "','"+ distributionColumn+"')");
-      vscode.window.showInformationMessage(res.rowCount.toString());
+      vscode.window.showInformationMessage(treeNode.getQuotedTableName()+ " is now distributed.");
       return res;
     }
     catch (err) {
