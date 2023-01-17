@@ -201,6 +201,16 @@
         "category": "PostgreSQL"
       },
       {
+        "command": "vscode-postgres.rebalanceTableShards",
+        "title": "Rebalance Table Shards",
+        "category": "PostgreSQL"
+      },
+      {
+        "command": "vscode-postgres.getRebalanceProgress",
+        "title": "Get rebalance progress",
+        "category": "PostgreSQL"
+      },
+      {
         "command": "vscode-postgres.copyTableName",
         "title": "Copy table name",
         "category": "PostgreSQL"
@@ -459,6 +469,16 @@
         {
           "command": "vscode-postgres.drainNode",
           "when": "view == postgres && viewItem == vscode-postgres.tree.worker",
+          "group": "postgres@1"
+        },
+        {
+          "command": "vscode-postgres.rebalanceTableShards",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.rebalance-shards",
+          "group": "postgres@1"
+        },
+        {
+          "command": "vscode-postgres.getRebalanceProgress",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.rebalance-shards",
           "group": "postgres@1"
         },
         {

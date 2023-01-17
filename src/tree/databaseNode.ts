@@ -6,6 +6,7 @@ import { Database } from '../common/database';
 import { InfoNode } from './infoNode';
 import { SchemaNode } from './schemaNode';
 import { WorkerNode } from './workerNode';
+import { RebalanceShardsNode } from './rebalanceShardsNode';
 
 export class DatabaseNode implements INode {
 
@@ -47,6 +48,7 @@ export class DatabaseNode implements INode {
       // })
       const workers = await connection.query('select nodename, nodeport from pg_dist_node;');
       let childs = [];
+      childs.push(new RebalanceShardsNode(this.connection));
 
       for (const worker in workers.rows)
       {
