@@ -5,6 +5,7 @@ import { TreeItem, TreeItemCollapsibleState } from "vscode";
 import { Database } from '../common/database';
 import { InfoNode } from './infoNode';
 import { SchemaNode } from './schemaNode';
+import { WorkerNode } from './workerNode';
 
 export class DatabaseNode implements INode {
 
@@ -41,9 +42,24 @@ export class DatabaseNode implements INode {
         AND has_schema_privilege(oid, 'CREATE, USAGE')
       ORDER BY nspname;`);
 
-      return res.rows.map<SchemaNode>(schema => {
+      // return res.rows.map<SchemaNode>(schema => {
+      //   return new SchemaNode(this.connection, schema.name);
+      // })
+      const workers = await connection.query('select nodename, nodeport from pg_dist_node;');
+      let childs = [];
+
+      for (const worker in workers.rows)
+      {
+        childs.push(new WorkerNode(this.connection, worker));
+      }
+
+      // let childs = workers.rows.map<WorkerNode>(worker => {
+      //   return new WorkerNode(this.connection, worker.nodeport);
+      // });
+
+      return childs.concat(res.rows.map<SchemaNode>(schema => {
         return new SchemaNode(this.connection, schema.name);
-      })
+      }));
     } catch(err) {
       return [new InfoNode(err)];
     } finally {

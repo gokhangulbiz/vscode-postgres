@@ -221,6 +221,21 @@
         "category": "PostgreSQL"
       },
       {
+        "command": "vscode-postgres.addNode",
+        "title": "Add node",
+        "category": "PostgreSQL"
+      },
+      {
+        "command": "vscode-postgres.removeNode",
+        "title": "Remove node",
+        "category": "PostgreSQL"
+      },
+      {
+        "command": "vscode-postgres.drainNode",
+        "title": "Drain node",
+        "category": "PostgreSQL"
+      },
+      {
         "command": "vscode-postgres.saveResult",
         "title": "Save Result",
         "category": "PostgreSQL",
@@ -300,6 +315,18 @@
         },
         {
           "command": "vscode-postgres.undistributeTable",
+          "when": "config.vscode-postgres.never"
+        },
+        {
+          "command": "vscode-postgres.addNode",
+          "when": "config.vscode-postgres.never"
+        },
+        {
+          "command": "vscode-postgres.removeNode",
+          "when": "config.vscode-postgres.never"
+        },
+        {
+          "command": "vscode-postgres.drainNode",
           "when": "config.vscode-postgres.never"
         },
         {
@@ -417,6 +444,21 @@
         {
           "command": "vscode-postgres.undistributeTable",
           "when": "view == postgres && viewItem == vscode-postgres.tree.table",
+          "group": "postgres@1"
+        },
+        {
+          "command": "vscode-postgres.addNode",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.worker",
+          "group": "postgres@1"
+        },
+        {
+          "command": "vscode-postgres.removeNode",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.worker",
+          "group": "postgres@1"
+        },
+        {
+          "command": "vscode-postgres.drainNode",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.worker",
           "group": "postgres@1"
         },
         {
