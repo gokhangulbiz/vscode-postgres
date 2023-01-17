@@ -49,7 +49,8 @@ export class addConnectionCommand extends BaseCommand {
       user: state.user,
       port: state.port,
       ssl: state.secure,
-      database: state.database
+      database: state.database,
+      certPath: state.certPath
     };
 
     connections[id].hasPassword = !!state.password;
@@ -137,6 +138,23 @@ export class addConnectionCommand extends BaseCommand {
     });
     if (typeof state.secure === 'undefined')
       state.secure = false;
+    if (state.secure === true)
+      return (input: MultiStepInput) => this.setCertPath(input, state);
+    return (input: MultiStepInput) => this.setDatabase(input, state);
+  }
+
+  async setCertPath(input: MultiStepInput, state: Partial<ConnectionState>) {
+    let active = sslOptions.find(s => s.ssl === !!state.secure);
+    state.certPath = await input.showInputBox({
+      title: this.TITLE,
+      step: input.CurrentStepNumber,
+      totalSteps: this.TotalSteps,
+      prompt: 'Cert path if needed',
+      placeholder: '/the/path/to/BaltimoreCyberTrustRoot.crt.pem',
+      ignoreFocusOut: true,
+      value: '',
+      validate: async (value) => ''
+    });
     return (input: MultiStepInput) => this.setDatabase(input, state);
   }
 
@@ -153,6 +171,7 @@ export class addConnectionCommand extends BaseCommand {
         user: state.user,
         password: state.password,
         port: state.port,
+        certPath: state.certPath,
         ssl: state.secure
       }, 'postgres');
       const res = await connection.query('SELECT datname FROM pg_database WHERE datistemplate = false;');
@@ -253,5 +272,6 @@ interface ConnectionState {
   password: string;
   port: number;
   database: string;
-  secure: boolean
+  secure: boolean,
+  certPath: string;
 }
