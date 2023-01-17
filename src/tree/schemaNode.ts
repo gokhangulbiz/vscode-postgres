@@ -7,6 +7,7 @@ import { TableNode } from "./tableNode";
 import { InfoNode } from "./infoNode";
 import { Global } from '../common/global';
 import { FunctionFolderNode } from './funcFolderNode';
+import { QueryResultFolderNode } from './queryResultFolderNode';
 
 export class SchemaNode implements INode {
 
