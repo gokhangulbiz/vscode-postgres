@@ -211,6 +211,11 @@
         "category": "PostgreSQL"
       },
       {
+        "command": "vscode-postgres.undistributeTable",
+        "title": "Undistribute table",
+        "category": "PostgreSQL"
+      },
+      {
         "command": "vscode-postgres.saveResult",
         "title": "Save Result",
         "category": "PostgreSQL",
@@ -282,6 +287,10 @@
         },
         {
           "command": "vscode-postgres.distributeTable",
+          "when": "config.vscode-postgres.never"
+        },
+        {
+          "command": "vscode-postgres.undistributeTable",
           "when": "config.vscode-postgres.never"
         },
         {
@@ -388,6 +397,11 @@
         },
         {
           "command": "vscode-postgres.distributeTable",
+          "when": "view == postgres && viewItem == vscode-postgres.tree.table",
+          "group": "postgres@1"
+        },
+        {
+          "command": "vscode-postgres.undistributeTable",
           "when": "view == postgres && viewItem == vscode-postgres.tree.table",
           "group": "postgres@1"
         },
