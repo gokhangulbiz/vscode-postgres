@@ -6,6 +6,7 @@ import { Database } from "../common/database";
 import { Global } from '../common/global';
 import { SqlQueryManager } from '../queries';
 import { QueryResult } from "pg";
+import { PostgreSQLTreeDataProvider } from "../tree/treeProvider";
 
 export class undistributeTableCommand extends BaseCommand {
 
@@ -26,6 +27,7 @@ export class undistributeTableCommand extends BaseCommand {
     }
     finally {
       await connection.end();
+      PostgreSQLTreeDataProvider.getInstance().refresh();
     }
 
   }
